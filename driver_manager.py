@@ -17,13 +17,12 @@ PASSWORD = 'btiNeh@85246'
 class DriverManager:
 
     def __init__(self):
-        print(os.path.abspath(os.path.join(os.path.dirname(__file__), 'chrome_user_data')))
-
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-
+        print("temp test")
         self.filename = DriverUpdater.install(path=self.base_dir, driver_name=DriverUpdater.chromedriver, upgrade=True, check_driver_is_up_to_date=True, old_return=False)
 
         options = webdriver.ChromeOptions()
+        print("Chrome User Data Path:", os.path.abspath(os.path.join(os.path.dirname(__file__), 'chrome_user_data')))
         options.add_argument("user-data-dir=" + os.path.abspath(os.path.join(os.path.dirname(__file__), 'chrome_user_data')))
 
         self.__driver = webdriver.Chrome(service=Service(self.filename), options=options)
