@@ -17,41 +17,55 @@ PASSWORD = 'btiNeh@85246'
 class DriverManager:
 
     def __init__(self):
+        print(os.path.abspath(os.path.join(os.path.dirname(__file__), 'chrome_user_data')))
+
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
 
         self.filename = DriverUpdater.install(path=self.base_dir, driver_name=DriverUpdater.chromedriver, upgrade=True, check_driver_is_up_to_date=True, old_return=False)
 
         options = webdriver.ChromeOptions()
-        options.add_argument("user-data-dir=C:\\Path")  # Path to your chrome profile
+        options.add_argument("user-data-dir=" + os.path.abspath(os.path.join(os.path.dirname(__file__), 'chrome_user_data')))
 
-        # self.driver = webdriver.Chrome(self.filename, options=options)
-        self.driver = webdriver.Chrome(service=Service(self.filename), options=options)
+        self.__driver = webdriver.Chrome(service=Service(self.filename), options=options)
 
+    def try_login(self) -> bool:
+        self.__driver.get('https://www.paycomonline.net/v4/cl/')
+        self.__driver.find_element(By.ID, 'clientcode').send_keys(CLIENT_CODE)
+        self.__driver.find_element(By.ID, 'username').send_keys(USERNAME)
+        self.__driver.find_element(By.ID, 'password').send_keys(PASSWORD)
 
-    def login(self) -> bool:
-        self.driver.get('https://www.paycomonline.net/v4/cl/')
-        self.driver.find_element(By.ID, 'clientcode').send_keys(CLIENT_CODE)
-        self.driver.find_element(By.ID, 'username').send_keys(USERNAME)
-        self.driver.find_element(By.ID, 'password').send_keys(PASSWORD)
-
-        self.driver.find_element(By.ID, 'btnSubmit').click()
-
-        delay = 4
+        self.__driver.find_element(By.ID, 'btnSubmit').click()
 
         try:
-            myElem = WebDriverWait(self.driver, delay).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'welcomeText')))
-            print("Page is ready!")
+            delay = 60
+            myElem = WebDriverWait(self.__driver, delay).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'welcomeText')))
+            print("logged in")
+            return True
         except TimeoutException:
-            print("Loading took too much time!")
+            print("logging in took too much time!")
+            return False
 
+    def login(self) -> bool:
+        login_result = self.try_login()
+        login_trial_count = 0
+        if login_result != True:
+            while (self.try_login() != True):
+                login_trial_count = login_trial_count + 1
+                print(login_trial_count)
+                if login_trial_count >= 2:
+                    print("Tried logging in 3 times, but failed :(")
+                    break
 
-    def load_cookies(self):
-        pass
+        return login_result
+
+    def driver_hand_over(self):
+        return self.__driver
 
 
 if __name__ == '__main__':
 
     driver_manager = DriverManager()
-    driver_manager.login()
+    login_result = driver_manager.login()
 
-    time.sleep(200)
+
+

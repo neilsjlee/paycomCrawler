@@ -1,16 +1,31 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from driver_manager import DriverManager
+from employee_data_crawler import EmployeeDataCrawler
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class Main:
+
+    def __init__(self):
+        self.driver_manager = DriverManager()
+        self.driver = None
+
+    def get_session_ready(self) -> bool:
+        login_result = self.driver_manager.login()
+        if login_result == True:
+            self.driver = self.driver_manager.driver_hand_over()
+            return True
+        else:
+            return False
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+if __name__ == "__main__":
+    main = Main()
+    is_session_ready = main.get_session_ready()
+    if is_session_ready == True:
+        print("LOGIN SUCCESSFUL. SESSION IS READY.")
+    else:
+        print("ERROR. LOGIN FAILED. SESSION IS NOT READY.")
+        exit()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    employee_data_crawler = EmployeeDataCrawler(main.driver_manager.driver_hand_over())
+
+
