@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException
 import os
 import time
-import pickle
 
 CLIENT_CODE = '0UE96'
 USERNAME = 'sangjunlee'

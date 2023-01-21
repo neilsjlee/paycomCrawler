@@ -27,5 +27,8 @@ if __name__ == "__main__":
         exit()
 
     employee_data_crawler = EmployeeDataCrawler(main.driver_manager.driver_hand_over())
+    fetched_data = employee_data_crawler.run()
+
+    print(fetched_data)
 
 
