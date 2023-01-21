@@ -24,8 +24,7 @@ class EmployeeDataCrawler:
         result = []
 
         users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
-        for idx in range(len(users) - 1):
-
+        for idx in range(len(users)):
             result_dict = {}
 
             user = users[idx]
@@ -62,8 +61,20 @@ class EmployeeDataCrawler:
                         if cnt % 4 == 2:
                             value = each
                             result_dict[key] = util.name_formatter(value)
-
                     cnt = cnt + 1
+            left_tab_components = self.driver.find_element(By.CLASS_NAME, 'css-tol3un').find_elements(By.CLASS_NAME, 'css-j486mh')
+            for each in left_tab_components:
+                lines = each.text.splitlines()
+                key, value = "", ""
+                cnt = 0
+                for line in lines:
+                    if cnt%4 == 0:
+                        key = line
+                    if cnt%4 == 1:
+                        value = line
+                    cnt = cnt + 1
+                result_dict[key] = util.name_formatter(value)
+
             employment_table = self.driver.find_element(By.CLASS_NAME, 'css-18hyvxw')
             contents = employment_table.find_elements(By.CLASS_NAME, 'css-j486mh')
             for each in contents:
@@ -72,6 +83,6 @@ class EmployeeDataCrawler:
 
             result.append(result_dict)
 
-            users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
+            # users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
 
         return result

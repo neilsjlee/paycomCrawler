@@ -36,7 +36,7 @@ class DriverManager:
 
         try:
             delay = 60
-            myElem = WebDriverWait(self.__driver, delay).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'welcomeText')))
+            WebDriverWait(self.__driver, delay).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'welcomeText')))
             print("logged in")
             return True
         except TimeoutException:
@@ -62,8 +62,8 @@ class DriverManager:
 
 if __name__ == '__main__':
 
-    driver_manager = DriverManager()
-    login_result = driver_manager.login()
+    test_driver_manager = DriverManager()
+    test_result = test_driver_manager.login()
 
 
 
