@@ -47,16 +47,16 @@ class Uploader:
             print(r.json)
             print(r.text)
 
-    def test_get_boards(self):
-        query = '{ boards (limit:15) {name id} }'
+    def get_all_boards(self):
+        query = '{ boards {name id} }'
         data = {'query': query}
 
         r = requests.post(url=self.API_URL, json=data, headers=self.headers)
         print(r.json)
         print(r.text)
 
-    def test_get_info(self):
-        query2 = '{boards(ids: ' + self.PEOPLE_BOARD_ID + ') { name id description items { name id column_values{title id type text } } } }'
+    def get_single_board_data(self, board_id):
+        query2 = '{boards(ids: ' + board_id + ') { name id description items { name id column_values{title id type text } } } }'
         data = {'query': query2}
 
         r = requests.post(url=self.API_URL, json=data, headers=self.headers)
@@ -69,5 +69,6 @@ if __name__ == '__main__':
 
     uploader = Uploader()
 
-    uploader.test_get_info()
-    uploader.upload_employee_data(TEST_DATA)
+    uploader.get_all_boards()
+    uploader.get_single_board_data('3850742138')
+    # uploader.upload_employee_data(TEST_DATA)

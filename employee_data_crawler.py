@@ -18,9 +18,9 @@ class EmployeeDataCrawler:
         WebDriverWait(self.driver, delay).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, 'css-vkr5jj')))
         print("'Make Employee Changes' page loaded")
-        return self.fetch_one_employee_info()
+        return self.fetch_employee_info()
 
-    def fetch_one_employee_info(self) -> list:
+    def fetch_employee_info(self) -> list:
         result = []
 
         users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
@@ -62,7 +62,7 @@ class EmployeeDataCrawler:
                             value = each
                             result_dict[key] = util.name_formatter(value)
                     cnt = cnt + 1
-            left_tab_components = self.driver.find_element(By.CLASS_NAME, 'css-tol3un').find_elements(By.CLASS_NAME, 'css-j486mh')
+            left_tab_components = self.driver.find_element(By.CLASS_NAME, 'css-1kf24an').find_elements(By.CLASS_NAME, 'css-j486mh')
             for each in left_tab_components:
                 lines = each.text.splitlines()
                 key, value = "", ""
@@ -86,3 +86,4 @@ class EmployeeDataCrawler:
             # users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
 
         return result
+
