@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException
 import os
 import sys
+import time
 
 CLIENT_CODE = '0UE96'
 
@@ -34,6 +35,7 @@ class DriverManager:
 
     def try_login(self, username, password) -> bool:
         self.__driver.get('https://www.paycomonline.net/v4/cl/')
+        self.__driver.implicitly_wait(10)
         self.__driver.find_element(By.ID, 'clientcode').send_keys(CLIENT_CODE)
         self.__driver.find_element(By.ID, 'username').send_keys(username)
         self.__driver.find_element(By.ID, 'password').send_keys(password)
