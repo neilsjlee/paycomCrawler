@@ -29,7 +29,7 @@ class EmployeeDataCrawler:
 
             user = users[idx]
             user.find_element(By.TAG_NAME, 'button').click()
-            time.sleep(2)
+            time.sleep(5)
             result_dict['name'] = util.name_formatter(
                 self.driver.find_element(By.CLASS_NAME, 'css-ewvkoh').find_element(By.CLASS_NAME,
                                                                                    'jssEEFormsRewrite17').text)
@@ -38,7 +38,7 @@ class EmployeeDataCrawler:
             phones_emails_managers = self.driver.find_elements(By.CLASS_NAME, 'css-1uf4nsy')
             for index_no in range(3):
                 phones_emails_managers[index_no].click()
-                time.sleep(0.5)
+                time.sleep(2)
                 lines = self.driver.find_element(By.CLASS_NAME, 'css-djbxmn').text.splitlines()
                 key, key_prefix, value = "", "", ""
                 if index_no == 0:
@@ -83,7 +83,7 @@ class EmployeeDataCrawler:
 
             result.append(result_dict)
 
-            # users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
+            users = self.driver.find_elements(By.CLASS_NAME, 'css-vkr5jj')
 
         return result
 
